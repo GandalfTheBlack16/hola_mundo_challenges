@@ -10,7 +10,7 @@ export function Navbar () {
     })
 
     return (
-        <nav className='w-max fixed top-0 my-4 inline-flex items-baseline gap-4 text-lg'>
+        <nav className='w-screen p-4 fixed bg-neutral-900 top-0 inline-flex justify-center items-baseline gap-4 text-lg'>
             <span className='me-12 text-2xl font-bold'>Message App</span>
             { menu }
         </nav>

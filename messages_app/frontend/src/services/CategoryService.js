@@ -1,18 +1,11 @@
-const CATEGORIES = [
-    { id: 1, name: 'Category 1' },
-    { id: 2, name: 'Category 2' },
-    { id: 3, name: 'Category 3' },
-    { id: 4, name: 'Category 4' }
-]
+const API_BASE_URL = 'http://localhost:3000/api'
 
-export function getCategories () {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(CATEGORIES)
-        }, 1000)
-    })
-}
-
-export function addCategory (name) {
-    
+export async function getCategories () {
+    const response = await fetch(`${API_BASE_URL}/categories`)
+    const { message, data } = await response.json()
+    if (!response.ok) {
+        throw new Error('Could not fetch categories')
+    }
+    console.log('Fetched', message)
+    return data
 }
