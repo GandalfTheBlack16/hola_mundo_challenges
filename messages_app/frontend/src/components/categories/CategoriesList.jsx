@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { CategoryItem } from "./CategoryItem"
 import { AddCategory } from "./AddCategory"
-import { getCategories } from "../../services/CategoryService" 
+import { addCategory, deleteCategory, getCategories, updateCategoryName } from "../../services/CategoryService" 
 
 export function CategoriesList () {
 
@@ -17,29 +17,37 @@ export function CategoriesList () {
     }, [])
 
     const handleRename = (id, name) => {
-        setCategories(categories.map(category => {
-            if (category.id === id) {
-                category.name = name
-            }
-            return category
-        }))
+        updateCategoryName(id, name)
+            .then(({ categoryId }) => {
+                setCategories(categories.map(category => {
+                    if (category.id === categoryId) {
+                        category.name = name
+                    }
+                    return category
+                }))
+            })
     }
 
     const handleDelete = (id) => {
-        setCategories(categories.filter(category => category.id !== id))
+        deleteCategory(id)
+            .then(({ categoryId }) => {
+                setCategories(categories.filter(category => category.id !== categoryId))
+            })
     }
 
     const handleAdd = (name) => {
-        //TODO: Add category to the server
-        setCategories([
-            ...categories,
-            { id: categories.length + 1, name }
-        ])
+        addCategory(name)
+            .then((data) => {
+                setCategories([
+                    ...categories,
+                    { id: data.id, name: data.name }
+                ])
+            })
     }
 
     const filteredCategories = filterValue ? categories.filter(category => category.name.toLowerCase().includes(filterValue)): categories
     const loader = <span className="loader"></span>
-
+    
     return (
         <div>
             <h1 className="text-2xl my-6">Add category</h1>
